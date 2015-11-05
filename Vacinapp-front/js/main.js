@@ -4,6 +4,7 @@ var main = (function () {
 		init: function () {
 			main.openVacinnePlace();
 			main.AddVacinne();
+			main.RemoveAccount();
 		},
 
 		openVacinnePlace : function(){
@@ -21,8 +22,13 @@ var main = (function () {
 			$("#VacinneList a").on("click", function(){
 				$("#ContentAddVacinne").modal();
 			});
-		}
+		},
 
+		RemoveAccount : function(){
+			$("#RemoveAccount").on("click", function(){
+				window.location = 'login.html';
+			});
+		},
 	};
 
 })();
