@@ -9,4 +9,14 @@ public class VacinaDAO extends HibernateDAO implements VacinaService {
 		persist(vacina);
 	}
 	
+	@Override
+	public void removeVacina(Vacina vacina) throws Exception {
+		//TODO
+	}
+	
+	@Override
+	public void atualizaVacina(Vacina vacina) throws Exception {
+		//TODO
+	}
+
 }

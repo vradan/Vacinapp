@@ -25,9 +25,6 @@ public class Usuario {
 	@Column(name = "str_nome")
 	private String nome;
 	
-	@Column(name = "str_sobrenome")
-	private String sobrenome;
-	
 	@Column(name = "str_email")
 	private String email;
 	
@@ -39,7 +36,7 @@ public class Usuario {
 	
 	@Column(name = "str_password")
 	private String password;
-
+	
 	public int getId() {
 		return id;
 	}
@@ -50,14 +47,6 @@ public class Usuario {
 
 	public void setNome(String nome) {
 		this.nome = nome;
-	}
-
-	public String getSobrenome() {
-		return sobrenome;
-	}
-
-	public void setSobrenome(String sobrenome) {
-		this.sobrenome = sobrenome;
 	}
 
 	public String getEmail() {
@@ -76,8 +65,8 @@ public class Usuario {
 		this.dataNascimento = dataNascimento;
 	}
 
-	public char getSexo() {
-		return sexo;
+	public Sexo getSexo() {
+		return Sexo.getSexoBySigla(sexo);
 	}
 
 	public void setSexo(Sexo sexo) {

@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<pageflow:Pageflow xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:pageflow="http://www.sybase.com/suade/pageflow" id="pf14467530646660" configfile="/Vacinapp/WebContent/WEB-INF/faces-config.xml">
+  <nodes xsi:type="pageflow:PFPage" id="pf14467533844154" referenceLink="//@navigationRule.0/@fromViewId|" outlinks="pf14467533844155"/>
+  <nodes xsi:type="pageflow:PFPage" name="index.jsf" id="pf14467533844156" referenceLink="//@navigationRule.0/@navigationCase.0/@toViewId|" inlinks="pf14467533844155" path="/index.jsf"/>
+  <links id="pf14467533844155" target="pf14467533844156" source="pf14467533844154" outcome="index" redirect="true"/>
+</pageflow:Pageflow>

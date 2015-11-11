@@ -10,6 +10,9 @@
 		
 		<class>fatecsp.ads.ihc.vacinapp.entity.Usuario</class>
 		<class>fatecsp.ads.ihc.vacinapp.entity.Vacina</class>
+		<class>fatecsp.ads.ihc.vacinapp.entity.Calendario</class>
+		<class>fatecsp.ads.ihc.vacinapp.entity.Aplicacao</class>
+		<class>fatecsp.ads.ihc.vacinapp.entity.RegistroAplicacoes</class>
 		
 		<properties>
 			<!-- Configuring JDBC properties -->
