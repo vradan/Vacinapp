@@ -56,75 +56,37 @@
     </nav>
 
     <div class="container">
-        <div class="row">
 
-            <h2 class="col-md-12">Vacinas</h2>
+        <form class="row" role="search">
+            
+            <h2 class="col-md-12">Locais</h2>
 
             <hr />
 
-            <div id="VacinneList" class="col-md-12 col-sm-12 col-xs-12">
-                <h4 class="col-md-12">De 0-3 anos</h4>
-                <ul class="list-group">
-                    <li class="list-group-item">
-                        <a href="#elmt01">Option one
-                            <span class="pull-right glyph-red glyphicon glyphicon glyphicon-minus-sign" 
-                                    aria-hidden="true"></span>
-                        </a>
-                    </li>
-                    <li class="list-group-item">
-                        <a href="#elmt02">Option two
-                            <span class="pull-right glyph-red glyphicon glyphicon glyphicon-minus-sign" 
-                                    aria-hidden="true"></span>
-                        </a>
-                    </li>
-                    <li class="list-group-item">
-                        <a href="#elmt03">Option three
-                            <span class="pull-right glyph-green glyphicon glyphicon-plus-sign" 
-                                    aria-hidden="true"></span>
-                        </a>
-                    </li>
-                </ul>
+            <div class="form-group col-xs-8">
+                <input type="text" class="form-control" placeholder="Buscar por vacinas">
+            </div>
+            <div class="col-xs-4">
+                <button type="submit" class="pull-right btn btn-primary">Buscar</button>
+            </div>
+        
+            <hr /> 
 
-                <h4 class="col-md-12">De 3-5 anos</h4>
+            <div id="PlaceList" class="col-md-12">
                 <ul class="list-group">
                     <li class="list-group-item">
-                        <a href="#elmt01">Option one
-                            <span class="pull-right glyph-green glyphicon glyphicon-plus-sign" 
-                                    aria-hidden="true"></span>
-                        </a>
+                        <a href="#elmt01">Place one</a>
                     </li>
                     <li class="list-group-item">
-                        <a href="#elmt02">Option two
-                            <span class="pull-right glyph-green glyphicon glyphicon-plus-sign" 
-                                    aria-hidden="true"></span>
-                        </a>
+                        <a href="#elmt02">Place two</a>
                     </li>
                     <li class="list-group-item">
-                        <a href="#elmt03">Option three
-                            <span class="pull-right glyph-green glyphicon glyphicon-plus-sign" 
-                                    aria-hidden="true"></span>
-                        </a>
-                    </li>
-                </ul>
-
-                <h4 class="col-md-12">Sexo Feminino</h4>
-                <ul class="list-group">
-                    <li class="list-group-item">
-                        <a href="#elmt01">Option one
-                            <span class="pull-right glyph-red glyphicon glyphicon glyphicon-minus-sign" 
-                                    aria-hidden="true"></span>
-                        </a>
-                    </li>
-                    <li class="list-group-item">
-                        <a href="#elmt03">Option three
-                            <span class="pull-right glyph-green glyphicon glyphicon-plus-sign" 
-                                    aria-hidden="true"></span>
-                        </a>
+                        <a href="#elmt03">Place three</a>
                     </li>
                 </ul>
             </div>
-        </div>
-    </div>
+        </form>
+    </div>    
 
     <div class="container">
         <hr>
@@ -134,36 +96,57 @@
     </div>
 
     <!-- Modal -->
-    <div id="ContentSeeVacinne" class="modal fade" role="dialog">
+    <div id="ContentSeePlace" class="modal fade" role="dialog">
         <div class="modal-dialog">
 
             <!-- Modal content-->
             <div class="modal-content">
                 <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal">&times;</button>
-                <h4 class="modal-title">Nome da vacina</h4>
+                <h4 class="modal-title">Nome do local</h4>
                 </div>
                 <form>
                 <div class="modal-body">
-                    <h5>Dados</h5>
+                    <h4>Endereço</h4>
                     <ul>
                         <li>
-                            <strong>Dado:</strong> Dados de demonstração
+                            <strong>Estado:</strong> São Paulo
                         </li>
                         <li>
-                            <strong>Dado:</strong> Dados de demonstração
+                            <strong>Cidade:</strong> São Paulo
                         </li>
                         <li>
-                            <strong>Dado:</strong> Dados de demonstração
+                            <strong>Endereço:</strong> Av. Paulista, 3200
                         </li>
-                    </ul>                    
+                    </ul>
+
+                    <hr>
+
+                    <h4>Vacinas nesse local</h4>
+
+                    <table class="table">
+                        <tr>
+                            <th>Nome</th>
+                            <th>Valor</th>
+                        </tr>
+                        <tr>
+                            <td>Hepatite A</td>
+                            <td>Gratis</td>
+                        </tr>
+                        <tr>
+                            <td>Hepatite B</td>
+                            <td>Gratis</td>
+                        </tr>
+                        <tr>
+                            <td>Hepatite C</td>
+                            <td>R$ 200</td>
+                        </tr>
+                    </table>
+
+
                 </div>
                 <div class="modal-footer">
-                    <p class="text-center">Deseja adicionar a vacina <b>Nome da vacina</b> a sua lista?</p>
-                    <p style="clear: both;" class="text-center">
-                        <button type="button" class="btn btn-danger" data-dismiss="modal">Não</button>
-                        <button type="button" class="btn btn-success" data-dismiss="modal">Sim</button>
-                    </p>
+
                 </div>
                 </form>
             </div>
