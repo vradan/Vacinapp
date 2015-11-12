@@ -3,7 +3,8 @@ var main = (function () {
 	return {
 		init: function () {
 			main.openVacinnePlace();
-			main.AddVacinne();
+			main.SeeVacinne();
+			main.SeePlace();
 			main.RemoveAccount();
 		},
 
@@ -18,9 +19,15 @@ var main = (function () {
 			});
 		},
 
-		AddVacinne : function(){
+		SeeVacinne : function(){
 			$("#VacinneList a").on("click", function(){
-				$("#ContentAddVacinne").modal();
+				$("#ContentSeeVacinne").modal();
+			});
+		},
+
+		SeePlace : function(){
+			$("#PlaceList a").on("click", function(){
+				$("#ContentSeePlace").modal();
 			});
 		},
 
