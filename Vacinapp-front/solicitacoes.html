@@ -6,7 +6,7 @@
     <head>
         <meta charset="utf-8">
         <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
-        <title>Locais</title>
+        <title>Solicitações</title>
         <meta name="description" content="">
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <link rel="apple-touch-icon" href="apple-touch-icon.png">
@@ -44,9 +44,9 @@
                     <a href="vacinas.html">Vacinas</a>
                 </li>
                 <li>
-                    <a href="#">Locais</a>
+                    <a href="locais.html">Locais</a>
                 </li>
-                <li><a href="solicitacoes.html">Solicitações</a></li>
+                <li><a href="#">Solicitações</a></li>
                 <li>
                     <a href="configuracao.html">Configuração</a>
                 </li>
@@ -58,14 +58,14 @@
 
     <div class="container">
 
-        <form class="row" role="search">
+        <form id="solicitacoes" class="row" role="search">
             
-            <h2 class="col-md-12">Locais</h2>
-
+            <h2 class="col-md-12">Solicitações de aprovação de vacina</h2>
+        
             <hr />
 
             <div class="form-group col-xs-8">
-                <input type="text" class="form-control" placeholder="Buscar por vacinas">
+                <input type="text" class="form-control" placeholder="Buscar por nome">
             </div>
             <div class="col-xs-4">
                 <button type="submit" class="pull-right btn btn-primary">Buscar</button>
@@ -73,18 +73,35 @@
         
             <hr /> 
 
-            <div id="PlaceList" class="col-md-12">
-                <ul class="list-group">
-                    <li class="list-group-item">
-                        <a href="#elmt01">Place one</a>
-                    </li>
-                    <li class="list-group-item">
-                        <a href="#elmt02">Place two</a>
-                    </li>
-                    <li class="list-group-item">
-                        <a href="#elmt03">Place three</a>
-                    </li>
-                </ul>
+            <div class="col-md-12">
+                <table id="solicitacoesTable" class="table table-striped">
+                    <thead>
+                        <tr>
+                            <th>Nome</th>
+                            <th></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>Diego Moreira Alves</td>
+                            <td>
+                                <a class="btn btn-primary pull-right" href="#elmt01">Validar</a>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>Íthala Sakai</td>
+                            <td>
+                                <a class="btn btn-primary pull-right" href="#elmt2">Validar</a>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>Lucas Morinigo</td>
+                            <td>
+                                <a class="btn btn-primary pull-right" href="#elmt03">Validar</a>
+                            </td>
+                        </tr>  
+                    </tbody>
+                </table>
             </div>
         </form>
     </div>    
@@ -97,57 +114,38 @@
     </div>
 
     <!-- Modal -->
-    <div id="ContentSeePlace" class="modal fade" role="dialog">
+    <div id="ContentSolicitacao" class="modal fade" role="dialog">
         <div class="modal-dialog">
 
             <!-- Modal content-->
             <div class="modal-content">
                 <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal">&times;</button>
-                <h4 class="modal-title">Nome do local</h4>
+                <h4 class="modal-title">Validação de solicitação</h4>
                 </div>
                 <form>
                     <div class="modal-body">
-                        <h4>Endereço</h4>
                         <ul>
                             <li>
-                                <strong>Estado:</strong> São Paulo
+                                <strong>Nome:</strong> Diego Moreira
                             </li>
                             <li>
-                                <strong>Cidade:</strong> São Paulo
+                                <strong>Sexo:</strong> Masculino
                             </li>
                             <li>
-                                <strong>Endereço:</strong> Av. Paulista, 3200
+                                <strong>Idade:</strong> 23
+                            </li>
+                            <li>
+                                <strong>Vacina:</strong> Hepatite A
+                            </li>
+                            <li>
+                                <strong>Dose:</strong> Única
                             </li>
                         </ul>
-
-                        <hr>
-
-                        <h4>Vacinas nesse local</h4>
-
-                        <table class="table">
-                            <tr>
-                                <th>Nome</th>
-                                <th>Valor</th>
-                            </tr>
-                            <tr>
-                                <td>Hepatite A</td>
-                                <td>Gratis</td>
-                            </tr>
-                            <tr>
-                                <td>Hepatite B</td>
-                                <td>Gratis</td>
-                            </tr>
-                            <tr>
-                                <td>Hepatite C</td>
-                                <td>R$ 200</td>
-                            </tr>
-                        </table>
-
-
                     </div>
                     <div class="modal-footer">
-
+                        <button class="btn btn-danger" data-dismiss="modal">Rejeitar</button>
+                        <button class="btn btn-success" data-dismiss="modal">Aprovar</button>
                     </div>
                 </form>
             </div>

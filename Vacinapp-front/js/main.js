@@ -6,6 +6,7 @@ var main = (function () {
 			main.SeeVacinne();
 			main.SeePlace();
 			main.RemoveAccount();
+			main.ApprovesVacine();
 		},
 
 		openVacinnePlace : function(){
@@ -28,6 +29,12 @@ var main = (function () {
 		SeePlace : function(){
 			$("#PlaceList a").on("click", function(){
 				$("#ContentSeePlace").modal();
+			});
+		},
+
+		ApprovesVacine : function(){
+			$("#solicitacoesTable a").on("click", function(){
+				$("#ContentSolicitacao").modal();
 			});
 		},
 

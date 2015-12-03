@@ -21,13 +21,25 @@
 	color: #FF0000;
 }
 
+#selectPlace{
+	background: none;
+    width: 100%;
+    padding: 5px;
+    border-radius: 5px;
+    cursor: pointer;
+    outline: none !important;
+}
 
+#solicitacoes h2{
+	width: 100%;
+	font-size: 2em;
+}
 
+#solicitacoes td{
+	vertical-align: middle;
+}
 
-
-
-
-
-
-
+#ContentSolicitacao .modal-footer{
+	text-align: center;
+}
 
