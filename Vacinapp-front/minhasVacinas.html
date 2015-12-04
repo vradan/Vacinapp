@@ -57,80 +57,112 @@
     </nav>
 
     <div class="container">
-        <div class="row">
+            <form id="wrapVacinnes" class="row">
 
-            <h2 class="col-md-12">Minhas vacinas</h2>
+                <h2 class="col-md-12">Minhas vacinas</h2>
 
-            <hr />
+                <hr />
 
-            <form id="wrapVacinnes" class="col-md-12 col-sm-12 col-xs-12">
-                <h4 class="col-md-12">De 0-3 anos</h4>
-                <ul class="list-group">
-                    <li class="list-group-item">
-                        <div class="checkbox">
-                          <label for="optCheck01">
-                            <input type="checkbox" id="optCheck01" value="optCheck01">
-                            Option one
-                          </label>
-                        </div>
-                    </li>
-                    <li class="list-group-item">
-                        <div class="checkbox">
-                          <label for="optCheck02">
-                            <input type="checkbox" id="optCheck02" value="optCheck02">
-                            Option two
-                          </label>
-                          <div style="display:inline-block" class="pull-right" >
-                            <span class="label label-danger">Obrigatório</span>
-                          </div>
-                        </div>
-                    </li>
-                    <li class="list-group-item">
-                        <div class="checkbox">
-                          <label for="optCheck03">
-                            <input type="checkbox" id="optCheck03" value="optCheck03">
-                            Option three
-                          </label>
-                          <div style="display:inline-block" class="pull-right" >
-                            <span class="label label-warning">+1 Dose</span>
-                          </div>
-                        </div>
-                    </li>
-                </ul>
+                <div class="form-group col-xs-8">
+                    <input type="text" class="form-control" placeholder="Buscar por vacinas">
+                </div>
+                <div class="col-xs-4">
+                    <button type="submit" class="pull-right btn btn-primary">Buscar</button>
+                </div>
+            
+                <hr /> 
 
-                <h4 class="col-md-12">De 3-5 anos</h4>
-                <ul class="list-group">
-                    <li class="list-group-item">
-                        <div class="checkbox">
-                          <label for="optCheck04">
-                            <input type="checkbox" id="optCheck04" value="optCheck04">
-                            Option one
-                          </label>
-                        </div>
-                    </li>
-                    <li class="list-group-item">
-                        <div class="checkbox">
-                          <label for="optCheck05">
-                            <input type="checkbox" id="optCheck05" value="optCheck05">
-                            Option two
-                          </label>
-                          <div style="display:inline-block" class="pull-right" >
-                            <span class="label label-danger">Obrigatório</span>
-                          </div>
-                        </div>
-                    </li>
-                    <li class="list-group-item">
-                        <div class="checkbox">
-                          <label for="optCheck06">
-                            <input type="checkbox" id="optCheck06" value="optCheck06">
-                            Option three
-                          </label>
-                          <div style="display:inline-block" class="pull-right" >
-                            <span class="label label-warning">+1 Dose</span>
-                          </div>
-                        </div>
-                    </li>
-                </ul>
+                <div class="panel-group" id="accordion" role="tablist" aria-multiselectable="true">
+                  
+                  <div class="panel panel-default">
+                    <div class="panel-heading" role="tab" id="headingOne">
+                      <h4 class="panel-title">
+                        <a role="button" data-toggle="collapse" data-parent="" href="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+                            De 3-5 anos
+                        </a>
+                      </h4>
+                    </div>
+
+                    <div id="collapseOne" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="headingOne">
+                        <ul class="list-group panel-body">
+                            <li class="list-group-item">
+                                <div class="checkbox">
+                                  <label for="optCheck04">
+                                    <input type="checkbox" id="optCheck04" value="optCheck04">
+                                    Option one
+                                  </label>
+                                </div>
+                            </li>
+                            <li class="list-group-item">
+                                <div class="checkbox">
+                                  <label for="optCheck05">
+                                    <input type="checkbox" id="optCheck05" value="optCheck05">
+                                    Option two
+                                  </label>
+                                  <div style="display:inline-block" class="pull-right" >
+                                    <span class="label label-danger">Obrigatório</span>
+                                  </div>
+                                </div>
+                            </li>
+                            <li class="list-group-item">
+                                <div class="checkbox">
+                                  <label for="optCheck06">
+                                    <input type="checkbox" id="optCheck06" value="optCheck06">
+                                    Option three
+                                  </label>
+                                  <div style="display:inline-block" class="pull-right" >
+                                    <span class="label label-warning">+1 Dose</span>
+                                  </div>
+                                </div>
+                            </li>
+                        </ul>
+                    </div>
+                  </div>
+
+                  <div class="panel panel-default">
+                    <div class="panel-heading" role="tab" id="headingTwo">
+                      <h4 class="panel-title">
+                        <a role="button" data-toggle="collapse" data-parent="" href="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
+                            De 6-15 anos
+                        </a>
+                      </h4>
+                    </div>
+
+                    <div id="collapseTwo" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingTwo">
+                        <ul class="list-group panel-body">
+                            <li class="list-group-item">
+                                <div class="checkbox">
+                                  <label for="optCheck04">
+                                    <input type="checkbox" id="optCheck04" value="optCheck04">
+                                    Option one
+                                  </label>
+                                </div>
+                            </li>
+                            <li class="list-group-item">
+                                <div class="checkbox">
+                                  <label for="optCheck05">
+                                    <input type="checkbox" id="optCheck05" value="optCheck05">
+                                    Option two
+                                  </label>
+                                  <div style="display:inline-block" class="pull-right" >
+                                    <span class="label label-danger">Obrigatório</span>
+                                  </div>
+                                </div>
+                            </li>
+                            <li class="list-group-item">
+                                <div class="checkbox">
+                                  <label for="optCheck06">
+                                    <input type="checkbox" id="optCheck06" value="optCheck06">
+                                    Option three
+                                  </label>
+                                  <div style="display:inline-block" class="pull-right" >
+                                    <span class="label label-warning">+1 Dose</span>
+                                  </div>
+                                </div>
+                            </li>
+                        </ul>
+                    </div>
+                  </div>
             </form>
         </div>
     </div>
@@ -171,7 +203,6 @@
 
         </div>
     </div>
-
 
     <script src="js/vendor/jquery-1.11.2.min.js"></script>
     <script src="js/vendor/bootstrap.min.js"></script>
