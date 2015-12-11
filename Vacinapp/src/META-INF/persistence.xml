@@ -12,7 +12,10 @@
 		<class>fatecsp.ads.ihc.vacinapp.entity.Vacina</class>
 		<class>fatecsp.ads.ihc.vacinapp.entity.Calendario</class>
 		<class>fatecsp.ads.ihc.vacinapp.entity.Aplicacao</class>
-		<class>fatecsp.ads.ihc.vacinapp.entity.RegistroAplicacoes</class>
+		<class>fatecsp.ads.ihc.vacinapp.entity.RegistroAplicacao</class>
+		<class>fatecsp.ads.ihc.vacinapp.entity.Estado</class>
+		<class>fatecsp.ads.ihc.vacinapp.entity.Cidade</class>
+		<class>fatecsp.ads.ihc.vacinapp.entity.Unidade</class>
 		
 		<properties>
 			<!-- Configuring JDBC properties -->
@@ -22,8 +25,8 @@
 			<property name="javax.persistence.jdbc.driver" value="org.postgresql.Driver" />
 			
 			<!-- Hibernate properties -->
-			<property name="hibernate.show_sql" value="true" />
-			<property name="hibernate.format_sql" value="true" />
+			<property name="hibernate.show_sql" value="false" />
+			<property name="hibernate.format_sql" value="false" />
 			<property name="hibernate.dialect" value="org.hibernate.dialect.PostgreSQLDialect" />
 		    <!-- 
 		    	Valores disponíveis

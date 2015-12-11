@@ -19,4 +19,20 @@ public class NavigationControllerBean {
 		return "minhasVacinas";
 	}
 	
+	public String goToSolicitacoes() {
+		return "solicitacoes";
+	}
+	
+	public String goToVacinas() {
+		return "vacinas";
+	}
+	
+	public String goToLocais() {
+		return "locais";
+	}
+	
+	public String goToConfiguracao() {
+		return "configuracao";
+	}
+	
 }

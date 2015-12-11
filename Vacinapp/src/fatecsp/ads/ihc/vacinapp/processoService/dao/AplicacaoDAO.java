@@ -60,5 +60,27 @@ public class AplicacaoDAO extends HibernateDAO implements AplicacaoService {
 			entityManager.close();
 		}
 	}
+
+	@Override
+	public Aplicacao getAplicacaoByID(int aplicacaoID) throws Exception {
+		entityManager = HibernateUtils.getEntityManager();
+		
+		String sql = "  SELECT A FROM Aplicacao A"
+				+ "		WHERE  A.id_aplicacao = :id ";
+		
+		Query query = entityManager.createQuery(sql);
+		query.setParameter("id", aplicacaoID);
+		
+		try {
+			if (!query.getResultList().isEmpty()) {
+				return (Aplicacao) query.getResultList().get(0);
+			}
+			throw new Exception("Aplicacao não econtrada!");
+		} catch (Exception e) {
+			throw e;
+		} finally {
+			entityManager.close();
+		}
+	}
 	
 }

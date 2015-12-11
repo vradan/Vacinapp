@@ -21,12 +21,32 @@
 	                    <h:inputText class="form-control" id="txtNome" name="txtNome" value="#{cadastro.usuario.nome}" />
 	                </div>
 	                <div class="form-group">
-	                    <label for="txtSexo">Sexo</label>
-						<h:selectOneMenu name="txtSexo" id="txtSexo" class="form-control" value="#{cadastro.sexo}">
-							<f:selectItem itemValue="M" itemLabel="Masculino" />
-							<f:selectItem itemValue="F" itemLabel="Feminino" />
-						</h:selectOneMenu>
+	                    <p>
+	                        <label>Sexo</label>
+	                    </p>
+	                    <label class="radio-inline">
+	                        <input type="radio" name="sex" value="M" /> Masculino
+	                    </label>
+	                    <label class="radio-inline">
+	                        <input type="radio" name="sex" value="F" /> Feminino
+	                    </label>
+	                    <h:inputHidden id="txtSexo" name="txtSexo" value="#{cadastro.sexo}" />
 	                </div>
+	                <div class="form-group">
+	                    <p>
+	                        <label>Perfil do Cadastro</label>
+	                    </p>
+	                    <label class="radio-inline">
+	                        <input type="radio" name="perfil" value="U" /> Usuário
+	                    </label>
+	                    <label class="radio-inline">
+	                        <input type="radio" name="perfil" value="F" /> Agente de Saúde
+	                    </label>
+	                    <h:inputHidden id="txtPerfil" name="txtPerfil" value="#{cadastro.perfil}" />
+	                </div>
+					<h:selectOneMenu name="optUnidade" id="optUnidade" class="form-group" value="#{cadastro.unidadeID}" style="display: none;">
+						<f:selectItems value="#{cadastro.unidades}" var="unidade" itemLabel="#{unidade.nome}" itemValue="#{unidade.id}" />
+					</h:selectOneMenu>
 	                <div class="form-group">
 	                    <label for="txtDataNascimento">Data de Nascimento</label>
 	                    <h:inputText class="form-control" id="txtDataNascimento" name="txtDataNascimento" value="#{cadastro.data}" />
@@ -57,13 +77,67 @@
 	        </div>
 	    </div>
 		<script>
+			//<![CDATA[
 			$(document).ready(function(){
 				$('[id*=txtNome]').attr('placeholder', 'Nome');
-				$('[id*=txtDataNascimento]').attr('placeholder', 'DD/MM/AAAA');
+				$('[id*=txtDataNascimento]').setMask('date').attr('placeholder', 'DD/MM/AAAA');
 				$('[id*=txtEmail]').attr('placeholder', 'Email');
 				$('[id*=txtPassword]').attr('placeholder', 'Senha');
 				$('[id*=txtRepitaPassword]').attr('placeholder', 'Confirmar senha');
+				
+				$('input:radio').click(function(){
+					var radio = $(this);
+					var value = '';
+					
+					if (radio.attr('name') == 'sex') {
+						value = radio.val();
+						$('[id*=txtSexo]').val(value);
+					} else if (radio.attr('name') == 'perfil') {
+						value = radio.val();
+						$('[id*=txtPerfil]').val(value);
+						if (value == 'F') {
+							$('[id*=optUnidade]').show();
+						} else {
+							$('[id*=optUnidade]').hide();
+						}
+					}
+				});
 			});
+			
+			function validaData(date) {
+				var ardt=new Array;
+				var ExpReg=new RegExp("(0[1-9]|[12][0-9]|3[01])/(0[1-9]|1[012])/[1-9][0-9]{3}");
+				ardt=date.split("/");
+				erro=false;
+				if ( date.search(ExpReg)==-1){
+					erro = true;
+				}else if (((ardt[1]==4)||(ardt[1]==6)||(ardt[1]==9)||(ardt[1]==11))&&(ardt[0]>30)){
+					erro = true;
+				}else if ( ardt[1]==2) {
+					if ((ardt[0]>28)&&((ardt[2]%4)!=0)){
+						erro = true;
+					}	
+					if ((ardt[0]>29)&&((ardt[2]%4)==0)){
+						erro = true;
+					}			
+				}else if(ardt[2]<1760){
+					erro = true;
+				}
+				if (erro) {
+					return false;	
+				}
+				return true;
+			}
+			
+			function validaEmail(email) {
+				var filter = /^([\w-]+(?:\.[\w-]+)*)@((?:[\w-]+\.)*\w[\w-]{0,66})\.([a-z]{2,6}(?:\.[a-z]{2})?)$/i;
+				
+				if(filter.test(email)){
+					return true;
+				}
+				return false;
+			}
+			//]]>
 		</script>
 	</ui:define>	
 	

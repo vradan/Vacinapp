@@ -4,6 +4,7 @@ import javax.faces.bean.ManagedBean;
 import javax.faces.bean.RequestScoped;
 
 import fatecsp.ads.ihc.vacinapp.entity.Usuario;
+import fatecsp.ads.ihc.vacinapp.entity.constants.Perfil;
 import fatecsp.ads.ihc.vacinapp.processoService.Delegate;
 import fatecsp.ads.ihc.vacinapp.processoService.ProcessoService;
 
@@ -27,7 +28,12 @@ public class LoginBean {
 		try {			
 			Usuario usuarioLogado = delegate.doLogin(usuario);
 			UsuarioBean.setUsuarioLogado(usuarioLogado);
-			UsuarioBean.redirect("paginas/minhasVacinas");
+			
+			if (usuarioLogado.getPerfil().getId().equals(Perfil.AGENTE_SAUDE)) {
+				UsuarioBean.redirect("paginas/agente/solicitacoes");
+			} else {
+				UsuarioBean.redirect("paginas/usuario/minhasVacinas");
+			}
 		} catch (Exception e){
 			message = e.getMessage();
 			System.out.println(message);

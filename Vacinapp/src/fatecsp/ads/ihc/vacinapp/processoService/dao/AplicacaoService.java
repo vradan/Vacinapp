@@ -15,4 +15,6 @@ public interface AplicacaoService {
 
 	public List<Aplicacao> getAplicacoesByCalendario(Calendario calendario) throws Exception;
 
+	public Aplicacao getAplicacaoByID(int aplicacaoID) throws Exception;
+
 }

@@ -1,0 +1,141 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+<!DOCTYPE html>
+<!--[if lt IE 7]>      <html class="no-js lt-ie9 lt-ie8 lt-ie7" lang=""> <![endif]-->
+<!--[if IE 7]>         <html class="no-js lt-ie9 lt-ie8" lang=""> <![endif]-->
+<!--[if IE 8]>         <html class="no-js lt-ie9" lang=""> <![endif]-->
+<!--[if gt IE 8]> <html class="no-js" lang=""> <![endif]-->
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	template="/template/template.xhtml">	
+
+	<ui:define name="container">	
+	    <div class="container">
+	
+	        <h:form class="row" role="search">
+	            
+	            <h2 class="col-md-12">Locais</h2>
+	
+	            <hr />
+	
+	            <div class="form-group col-xs-8">
+	                <h:inputText type="text" id="txtFiltro" name="txtFiltro" class="form-control" value="#{local.filtro}" />
+	            </div>
+	            <div class="col-xs-4">
+	                <h:commandButton class="pull-right btn btn-primary" value="Buscar">
+	                	<f:ajax listener="#{local.doFiltro}" execute="txtFiltro" render="placeList" />
+	                </h:commandButton>
+	            </div>
+	        
+	            <hr /> 
+	            
+	            <h:panelGroup layout="block" id="placeList" class="col-md-12">
+	                <ul class="list-group">
+	                	<ui:repeat var="unidade" value="#{local.unidades}" varStatus="status">
+		                    <li class="list-group-item">
+		                    	<a onclick="loadModal('#{unidade.id}');" style="cursor: pointer;">
+		                    		<h:outputText value="#{unidade.nome}" />
+		                    	</a>
+		                    </li>
+	                    </ui:repeat>
+	                </ul>
+	            </h:panelGroup>
+	            
+	            <h:inputHidden id="unidadeID" name="unidadeID" value="#{local.unidadeID}" />
+ 				<h:commandLink id="btn-modal" style="display: none;">
+                	<f:ajax listener="#{local.showModal}" execute="unidadeID" render="@form" onevent="showModal" />
+                </h:commandLink>
+
+			    <!-- Modal -->
+			    <div id="ContentSeePlace" class="modal fade" role="dialog">
+			        <div class="modal-dialog">
+			            <!-- Modal content-->
+			            <div class="modal-content">
+			                <div class="modal-header">
+				                <button type="button" class="close" data-dismiss="modal">
+									<span class="glyphicon glyphicon-remove" aria-hidden="true" />
+				                </button>
+				                <h4 class="modal-title">
+				                	<h:outputText value="#{local.unidadeSelecionada.nome}" />
+				                </h4>
+			                </div>
+			                <div class="modal-body">
+			                    <h4>Endereço</h4>
+			                    <ul>
+			                        <li>
+			                            <strong>Estado:</strong>
+			                            <h:outputText value=" #{local.unidadeSelecionada.cidade.estado.nome}" />
+			                        </li>
+			                        <li>
+			                            <strong>Cidade:</strong>
+			                            <h:outputText value=" #{local.unidadeSelecionada.cidade.nome}" />
+			                        </li>
+			                        <li>
+			                            <strong>Suvis:</strong>
+			                            <h:outputText value=" #{local.unidadeSelecionada.suvis}" />
+			                        </li>
+			                        <li>
+			                            <strong>Distrito Administrativo:</strong>
+			                            <h:outputText value=" #{local.unidadeSelecionada.distrito}" />
+			                        </li>
+			                        <li>
+			                            <strong>Endereço:</strong>
+			                            	<h:outputText value=" #{local.unidadeSelecionada.rua}" />, 
+			                            	<h:outputText value=" #{local.unidadeSelecionada.numero}" />
+			                        </li>
+			                        <li>
+			                            <strong>Telefone:</strong>
+			                            <h:outputText value=" #{local.unidadeSelecionada.telefone}" />
+			                        </li>
+			                    </ul>
+			
+			                    <hr />
+			                    
+			                    <!-- 
+			                    <h4>Vacinas nesse local</h4>
+			
+			                    <table class="table">
+			                        <tr>
+			                            <th>Nome</th>
+			                            <th>Valor</th>
+			                        </tr>
+			                        <tr>
+			                            <td>Hepatite A</td>
+			                            <td>Gratis</td>
+			                        </tr>
+			                        <tr>
+			                            <td>Hepatite B</td>
+			                            <td>Gratis</td>
+			                        </tr>
+			                        <tr>
+			                            <td>Hepatite C</td>
+			                            <td>R$ 200</td>
+			                        </tr>
+			                    </table>
+			                     -->
+				        	</div>
+			        	</div>
+		            </div>
+			    </div>
+	        </h:form>
+	    </div>
+	    
+	    <script>
+	    	function loadModal(value) {
+	    		$('[id*=unidadeID]').val(value);
+	    		$('[id*=btn-modal]').click();
+	    	}
+	    
+	    	function showModal() {
+	    		$('#ContentSeePlace').modal('show');
+	    	}
+	    	
+		    $(document).ready(function() {
+		    	$('[id*=txtFiltro]').attr('placeholder', 'Buscar por nome do local');
+		    });
+	    </script>
+	    
+	</ui:define>
+	
+</ui:composition>

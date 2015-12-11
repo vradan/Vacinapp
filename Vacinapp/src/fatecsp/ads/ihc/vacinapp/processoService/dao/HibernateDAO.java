@@ -11,13 +11,14 @@ public class HibernateDAO implements HibernateService {
 	@Override
 	public void persist(Object obj) throws Exception {
 		entityManager = HibernateUtils.getEntityManager();
-		
 		try {
 			entityManager.getTransaction().begin();
 			entityManager.persist(obj);
 			entityManager.getTransaction().commit();
 		} catch (Exception e) {
-			entityManager.getTransaction().rollback();
+			if (entityManager.getTransaction().isActive()) {
+				entityManager.getTransaction().rollback();
+			}
 			throw e;
 		} finally {
 			entityManager.close();
@@ -34,11 +35,51 @@ public class HibernateDAO implements HibernateService {
 			entityManager.merge(obj);
 			entityManager.getTransaction().commit();
 		} catch (Exception e) {
-			entityManager.getTransaction().rollback();
+			if (entityManager.getTransaction().isActive()) {
+				entityManager.getTransaction().rollback();
+			}
 			throw e;
 		} finally {
 			entityManager.close();
 		}
 	}
+	
+	@Override
+	public void update(Object obj) throws Exception {
+		entityManager = HibernateUtils.getEntityManager();
+		
+		try {
+			entityManager.getTransaction().begin();
+			entityManager.merge(obj);
+			entityManager.getTransaction().commit();
+		} catch (Exception e) {
+			if (entityManager.getTransaction().isActive()) {
+				entityManager.getTransaction().rollback();
+			}
+			throw e;
+		} finally {
+			entityManager.close();
+		}
+	}
+
+	@Override
+	public <T> void remove(Class<T> type, int id) throws Exception {
+		entityManager = HibernateUtils.getEntityManager();
+		
+		try {
+			entityManager.getTransaction().begin();
+			Object obj = entityManager.find(type, id);
+			entityManager.remove(obj);
+			entityManager.getTransaction().commit();
+		} catch (Exception e) {
+			if (entityManager.getTransaction().isActive()) {
+				entityManager.getTransaction().rollback();
+			}
+			throw e;
+		} finally {
+			entityManager.close();
+		}
+	}
+	
 	
 }

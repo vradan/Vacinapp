@@ -10,6 +10,6 @@ public interface UsuarioService {
 	
 	public void atualizaUsuario(Usuario usuario) throws Exception;
 
-	public Usuario getUsuarioByEmail(Usuario usuario) throws Exception;
+	public Usuario getUsuarioByEmail(String email) throws Exception;
 
 }

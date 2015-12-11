@@ -1,0 +1,177 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+<!DOCTYPE html>
+<!--[if lt IE 7]>      <html class="no-js lt-ie9 lt-ie8 lt-ie7" lang=""> <![endif]-->
+<!--[if IE 7]>         <html class="no-js lt-ie9 lt-ie8" lang=""> <![endif]-->
+<!--[if IE 8]>         <html class="no-js lt-ie9" lang=""> <![endif]-->
+<!--[if gt IE 8]> <html class="no-js" lang=""> <![endif]-->
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	template="/template/template.xhtml">
+
+	<ui:define name="container">
+		
+		<script>
+	    	function changeModalInfo(li) {
+	    		li.on('click', function() {
+	    			var id = $(this).attr('data-id');
+	    			$('[id*=aplicacao-id]').val(id);
+	    			$('[id*=modal-load-info]').click();
+	    			$("#MyVacinnesInfo").modal();
+	    		});
+	    	}
+	    
+	    	$(document).ready(function() {
+			    $('[id*=txtFiltro]').attr('placeholder', 'Buscar por nome da vacina');
+	    	});
+	    </script>
+		
+	    <div class="container">
+	        <div class="row">
+	
+	            <h2 class="col-md-12">Minhas vacinas</h2>
+	
+	            <hr />
+	            
+	            <h:form id="wrapVacinnes" class="col-md-12 col-sm-12 col-xs-12">
+	                <div class="form-group col-xs-8">
+	                    <h:inputText type="text" id="txtFiltro" name="txtFiltro" class="form-control" value="#{minhasVacinas.filtro}" />
+	                </div>
+	                <div class="col-xs-4">
+		                <h:commandButton class="pull-right btn btn-primary" value="Buscar">
+		                	<f:ajax listener="#{minhasVacinas.doFiltro}" execute="txtFiltro" render="@form" />
+		                </h:commandButton>
+	                </div>
+	                
+	                <hr /> 
+		            
+	            	<div class="panel-group" id="accordion" role="tablist" aria-multiselectable="true">
+	            
+			            <h:panelGroup layout="block" rendered="#{minhasVacinas.minhasVacinasComposite == null}">
+			            	<h4>Não foram encontradas vacinas disponíveis!</h4>
+			            </h:panelGroup>
+			            
+			            <ui:repeat id="teste" var="minhasVacinasComposite" value="#{minhasVacinas.minhasVacinasComposite}" varStatus="status">
+			            	<div class="panel panel-default">
+								<div class="panel-heading" role="tab" id="heading-#{minhasVacinasComposite.calendario.id}">
+									<h4 class="panel-title">
+										<a role="button" data-toggle="collapse" data-parent="" href="#colapse-#{minhasVacinasComposite.calendario.id}" aria-expanded="true" aria-controls="colapse-#{minhasVacinasComposite.calendario.id}">
+											<h:outputText value="#{minhasVacinasComposite.calendario.nome}" />
+										</a>
+									</h4>
+								</div>
+
+				            	<div id="colapse-#{minhasVacinasComposite.calendario.id}" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="heading-#{minhasVacinasComposite.calendario.id}">
+					            	<ul class="list-group panel-body">
+						            	<ui:repeat var="aplicacaoComposite" value="#{minhasVacinasComposite.aplicacoesComposite}" varStatus="status">
+						                    <li id="vacina-#{minhasVacinasComposite.calendario.id}#{aplicacaoComposite.aplicacao.vacina.id}" class="list-group-item" data-id="#{aplicacaoComposite.aplicacao.id}">
+						                        <div class="checkbox">
+													<h:outputLabel for="optCheck">
+														<h:selectBooleanCheckbox disabled="#{aplicacaoComposite.aplicada}" name="optCheck" id="optCheck" value="#{aplicacaoComposite.aplicada}" />
+														<h:outputText value="#{aplicacaoComposite.aplicacao.vacina.nome}" />
+													</h:outputLabel>
+													<h:panelGroup rendered="#{aplicacaoComposite.aplicacao.vacina.obrigatoria or aplicacaoComposite.aprovada}">
+														<div style="display:inline-block" class="pull-right" >
+															<h:panelGroup rendered="#{aplicacaoComposite.aplicacao.vacina.obrigatoria}">
+																<span class="label label-danger">Obrigatório</span>
+															</h:panelGroup>
+															<h:panelGroup rendered="#{aplicacaoComposite.doses > 1}">
+																<span id="vacina-doses" class="label label-warning"><h:outputText value="+#{aplicacaoComposite.doses} Doses" /></span>
+															</h:panelGroup>
+															<h:panelGroup rendered="#{aplicacaoComposite.aprovada}">
+																<span id="aprovada" class="label label-success">Aprovada</span>
+															</h:panelGroup>
+														</div>
+													</h:panelGroup>
+						                        </div>
+						                    </li>
+						                    <h:panelGroup rendered="#{aplicacaoComposite.aprovada}">
+							                    <script>
+							                    	changeModalInfo($('#vacina-#{minhasVacinasComposite.calendario.id}#{aplicacaoComposite.aplicacao.vacina.id}'));
+							                    </script>
+						                    </h:panelGroup>
+						            	</ui:repeat>
+					            	</ul>
+				            	</div>
+			            	</div>
+			            </ui:repeat>
+			            
+			            <h:inputHidden id="aplicacao-id" name="aplicacao-id" value="#{minhasVacinas.aplicacaoID}" />
+           				<h:commandLink id="modal-load-aplicacao" name="modal-load-aplicacao" style="display: none;">
+                    		<f:ajax listener="#{minhasVacinas.showModalAplicacao}" execute="aplicacao-id" render=":wrapVacinnes:local-modal" />
+                   		</h:commandLink>
+        		        <h:commandLink id="modal-load-info" name="modal-load-info" style="display: none;">
+                    		<f:ajax listener="#{minhasVacinas.showModalInfo}" execute="aplicacao-id" render=":wrapVacinnes:info-modal" />
+                   		</h:commandLink>
+			            
+					    <!-- Modal -->
+					    <div id="MyVacinnes" class="modal fade" role="dialog">
+					        <div class="modal-dialog">
+					            <!-- Modal content-->
+					            <div class="modal-content">
+					                <div class="modal-header">
+					                <button type="button" class="close" data-dismiss="modal">
+					                	<span class="glyphicon glyphicon-remove" aria-hidden="true" />
+					                </button>
+					                <h4 class="modal-title">Local de Vacina</h4>
+					                </div>
+					                <h:panelGroup layout="block" id="local-modal" name="local-modal">
+						                <div class="modal-body">
+						                    <p></p>
+						                    <p>Escolha o local de onde você deseja realizar a solicitação da vacina</p>
+						                    <label for="selectPlace">Selecione o local:</label>
+											<h:selectOneMenu name="optUnidade" id="optUnidade" class="form-group" value="#{minhasVacinas.unidadeID}">
+												<f:selectItems value="#{minhasVacinas.unidades}" var="unidade" itemLabel="#{unidade.nome}" itemValue="#{unidade.id}" />
+											</h:selectOneMenu>
+						                </div>
+						                <div class="modal-footer">
+						                    <button type="button" class="btn btn-success" data-dismiss="modal" onclick="$('[id*=btn-send]').click();">Confirmar</button>
+						                    <h:commandButton id="btn-send" name="btn-send" action="#{minhasVacinas.sendSolicitacao}" style="display: none;">
+						                    	<f:ajax execute="@form" />
+						                    </h:commandButton>
+						                </div>
+					                </h:panelGroup>
+					            </div>
+					        </div>
+					    </div>
+					    
+						<!-- Modal -->
+					    <div id="MyVacinnesInfo" class="modal fade" role="dialog">
+					        <div class="modal-dialog">
+					            <!-- Modal content-->
+					            <div class="modal-content">
+					                <div class="modal-header">
+						                <button type="button" class="close" data-dismiss="modal">
+						                	<span class="glyphicon glyphicon-remove" aria-hidden="true" />
+						                </button>
+						                <h4 class="modal-title">Informações da Aplicação</h4>
+					                </div>
+					                <h:panelGroup layout="block" id="info-modal" name="info-modal">
+						                <div class="modal-body">
+						                    <h4><h:outputText value="#{minhasVacinas.aplicacaoSelecionada.vacina.nome}" /></h4>
+						                    <ul>
+						                        <li>
+						                            <strong>Data da aplicação:</strong><h:outputText value=" #{minhasVacinas.registroAplicacaoSelecionada.dataAplicacao.date}/#{minhasVacinas.registroAplicacaoSelecionada.dataAplicacao.month + 1}/#{minhasVacinas.registroAplicacaoSelecionada.dataAplicacao.year + 1900}" />
+						                        </li>
+						                        <li>
+						                            <strong>Lote:</strong><h:outputText value=" #{minhasVacinas.registroAplicacaoSelecionada.vacinaLote}" />
+						                        </li>
+						                    </ul>
+						                </div>
+					                </h:panelGroup>
+					            </div>
+					        </div>
+					    </div>
+					    
+				    </div>
+				    <script>
+				    	main.openVacinnePlace();
+				    </script>
+			    </h:form>
+	        </div>
+	    </div>
+
+	</ui:define>
+	
+</ui:composition>

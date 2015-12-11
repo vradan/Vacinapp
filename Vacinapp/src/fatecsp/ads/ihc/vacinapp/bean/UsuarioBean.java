@@ -5,12 +5,16 @@ import javax.faces.bean.SessionScoped;
 import javax.faces.context.FacesContext;
 
 import fatecsp.ads.ihc.vacinapp.entity.Usuario;
+import fatecsp.ads.ihc.vacinapp.entity.constants.Perfil;
 
 @ManagedBean(name = "usuario")
 @SessionScoped
 public class UsuarioBean {
 
 	private Usuario usuario;
+	private boolean isAgente;
+	private boolean isUsuario;
+	private boolean isAdmin;
 	
 	public static void setUsuarioMessage(String header, String message) {
 		FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("messageHeader", header);
@@ -44,11 +48,43 @@ public class UsuarioBean {
 		String path = FacesContext.getCurrentInstance().getExternalContext().getRequestContextPath();
 		FacesContext.getCurrentInstance().getExternalContext().redirect(path + "/" + pagina + ".jsf");
 	}
+	
+	public void setPerfil() {
+		isUsuario = false;
+		isAgente = false;
+		isAdmin = false;
+		
+		if (usuario.getPerfil().getId().equals(Perfil.USUARIO)) {
+			isUsuario = true;
+		} else if (usuario.getPerfil().getId().equals(Perfil.AGENTE_SAUDE)) {
+			isAgente = true;
+		} else if (usuario.getPerfil().getId().equals(Perfil.ADMINISTRADOR)) {
+			isAdmin = true;
+		}
+	}
 
 	public Usuario getUsuario() {
 		if (usuario == null)
 			usuario = UsuarioBean.getUsuarioLogado();
 		return usuario;
+	}
+
+	public boolean getIsAgente() {
+		if (!isAgente && !isUsuario) {
+			setPerfil();
+		}
+		return isAgente;
+	}
+
+	public boolean getIsUsuario() {
+		if (!isAgente && !isUsuario) {
+			setPerfil();
+		}
+		return isUsuario;
+	}
+
+	public boolean getIsAdmin() {
+		return isAdmin;
 	}
 	
 }

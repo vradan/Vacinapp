@@ -27,12 +27,12 @@ public class CalendarioDAO extends HibernateDAO implements CalendarioService {
 	}
 
 	@Override
-	public List<Calendario> getCalendarioBetweenMonthAndSexo(int month, Sexo sexo) throws Exception {
+	public List<Calendario> getCalendarioBeforeMonthAndSexo(int month, Sexo sexo) throws Exception {
 		entityManager = HibernateUtils.getEntityManager();
 		
 		String sql = "SELECT C "
 				+ "		FROM Calendario C "
-				+ "		WHERE :month BETWEEN C.faixaInicio AND C.faixaFim "
+				+ "		WHERE C.faixaInicio <= :month "
 				+ "			AND (C.sexo = 'A' OR C.sexo = '" + sexo.getSexo() + "') ";
 		
 		Query query = entityManager.createQuery(sql);
@@ -59,7 +59,6 @@ public class CalendarioDAO extends HibernateDAO implements CalendarioService {
 		} finally {
 			entityManager.close();
 		}
-
 	}
 	
 }

@@ -21,6 +21,9 @@ public class Vacina {
 	@Column(name = "str_nome")
 	private String nome;
 	
+	@Column(name = "str_descricao")
+	private String descricao;
+	
 	@Column(name = "bol_obrigatoria")
 	private boolean obrigatoria;
 
@@ -34,6 +37,14 @@ public class Vacina {
 
 	public void setNome(String nome) {
 		this.nome = nome;
+	}
+
+	public String getDescricao() {
+		return descricao;
+	}
+
+	public void setDescricao(String descricao) {
+		this.descricao = descricao;
 	}
 
 	public boolean isObrigatoria() {

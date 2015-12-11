@@ -6,14 +6,18 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 
+import fatecsp.ads.ihc.vacinapp.composite.AplicacaoComposite;
+import fatecsp.ads.ihc.vacinapp.composite.MinhasVacinasComposite;
 import fatecsp.ads.ihc.vacinapp.entity.Aplicacao;
 import fatecsp.ads.ihc.vacinapp.entity.Calendario;
-import fatecsp.ads.ihc.vacinapp.entity.RegistroAplicacoes;
+import fatecsp.ads.ihc.vacinapp.entity.RegistroAplicacao;
+import fatecsp.ads.ihc.vacinapp.entity.Unidade;
 import fatecsp.ads.ihc.vacinapp.entity.Usuario;
 import fatecsp.ads.ihc.vacinapp.entity.Vacina;
 import fatecsp.ads.ihc.vacinapp.exception.UsuarioNotFoundException;
 import fatecsp.ads.ihc.vacinapp.processoService.dao.AplicacaoService;
 import fatecsp.ads.ihc.vacinapp.processoService.dao.CalendarioService;
+import fatecsp.ads.ihc.vacinapp.processoService.dao.LocalService;
 import fatecsp.ads.ihc.vacinapp.processoService.dao.RegistroAplicacoesService;
 import fatecsp.ads.ihc.vacinapp.processoService.dao.UsuarioService;
 import fatecsp.ads.ihc.vacinapp.processoService.dao.VacinaService;
@@ -27,6 +31,7 @@ public class Facade implements ProcessoService {
 	private RegistroAplicacoesService registroAplicacoesDAO = factory.getInstanceRegistroAplicacoesDAO();
 	private VacinaService vacinaDAO = factory.getInstanceVacinaDAO();
 	private UsuarioService usuarioDAO = factory.getInstanceUsuarioDAO();
+	private LocalService localDAO = factory.getInstanceLocalDAO();
 	
 	public Facade() {
 		if (factory == null)
@@ -44,7 +49,7 @@ public class Facade implements ProcessoService {
 	}
 	
 	@Override
-	public void cadastraRegistroAplicacoes(RegistroAplicacoes registroAplicacoes) throws Exception {
+	public void cadastraRegistroAplicacoes(RegistroAplicacao registroAplicacoes) throws Exception {
 		registroAplicacoesDAO.cadastraRegistroAplicacoes(registroAplicacoes);
 	}
 	
@@ -56,7 +61,7 @@ public class Facade implements ProcessoService {
 	@Override
 	public void cadastraUsuario(Usuario usuario) throws Exception {
 		try {
-			usuarioDAO.getUsuarioByEmail(usuario);
+			usuarioDAO.getUsuarioByEmail(usuario.getEmail());
 			throw new Exception("Já existe um usuário com este email!");
 		} catch (UsuarioNotFoundException e) {
 			usuarioDAO.cadastraUsuario(usuario);
@@ -66,7 +71,7 @@ public class Facade implements ProcessoService {
 	@Override
 	public Usuario doLogin(Usuario usuario) throws Exception {
 		
-		Usuario usuarioLogado = usuarioDAO.getUsuarioByEmail(usuario);
+		Usuario usuarioLogado = usuarioDAO.getUsuarioByEmail(usuario.getEmail());
 		
 		if (usuario.getPassword().equals(usuarioLogado.getPassword())) {
 			return usuarioLogado;
@@ -76,8 +81,8 @@ public class Facade implements ProcessoService {
 	}
 
 	@Override
-	public List<Aplicacao> getUsuarioAplicacoes(Usuario usuario) throws Exception {
-		List<Aplicacao> aplicacoes = new ArrayList<Aplicacao>();
+	public List<MinhasVacinasComposite> getUsuarioAplicacoesComposite(Usuario usuario) throws Exception {
+		List<RegistroAplicacao> registros;
 		List<Calendario> calendarios;
 		
 		Calendar cal = Calendar.getInstance();
@@ -88,15 +93,101 @@ public class Facade implements ProcessoService {
 		
 		Period p = Period.between(nascimento, now);
 		
-		calendarios = calendarioDAO.getCalendarioBetweenMonthAndSexo(p.getMonths() + (p.getYears()*12), usuario.getSexo());
+		registros = registroAplicacoesDAO.getRegistrosAplicacoesByUser(usuario);
+		calendarios = calendarioDAO.getCalendarioBeforeMonthAndSexo(p.getMonths() + (p.getYears()*12), usuario.getSexo());
 		
+		List<MinhasVacinasComposite> minhasVacinasComposites = new ArrayList<MinhasVacinasComposite>();
+
 		for (Calendario calendario : calendarios) {
-			for (Aplicacao aplicacao : aplicacaoDAO.getAplicacoesByCalendario(calendario)) {
-				aplicacoes.add(aplicacao);
+			MinhasVacinasComposite minhasVacinasComposite = new MinhasVacinasComposite();
+			
+			List<Aplicacao> aplicacoesAux = aplicacaoDAO.getAplicacoesByCalendario(calendario);
+			
+			if (aplicacoesAux != null && !aplicacoesAux.isEmpty()) {
+				List<AplicacaoComposite> aplicacoesComposite = new ArrayList<AplicacaoComposite>();
+				for (Aplicacao aplicacao : aplicacoesAux) {
+					AplicacaoComposite aplicacaoComposite = new AplicacaoComposite();
+					boolean aplicada = false;
+					boolean aprovada = false;
+					
+					if (registros != null) {
+						for (RegistroAplicacao registro : registros) {
+							if (aplicacao.getId() == registro.getAplicacao().getId()) {
+								aplicada = true;
+								aprovada = registro.getAprovada();
+								break;
+							}
+						}
+					}
+					aplicacaoComposite.setAplicada(aplicada);
+					aplicacaoComposite.setAprovada(aprovada);
+					aplicacaoComposite.setAplicacao(aplicacao);
+					
+					boolean alreadyExist = false;
+					int index = 0;
+					for (AplicacaoComposite aplicacaoCompositeAux : aplicacoesComposite) {
+						if (aplicacaoComposite.getAplicacao().getVacina().getId() == aplicacaoCompositeAux.getAplicacao().getVacina().getId()) {
+							if (!aplicacaoComposite.getAprovada() && !aplicacaoCompositeAux.getAprovada()) {
+								alreadyExist = true;
+								break;
+							}
+						}
+						index++;
+					}
+					
+					if (!alreadyExist) {
+						aplicacoesComposite.add(aplicacaoComposite);
+					} else {
+						aplicacoesComposite.get(index).setDoses(aplicacoesComposite.get(index).getDoses() + 1);
+					}
+				}
+				minhasVacinasComposite.setCalendario(calendario);
+				minhasVacinasComposite.setAplicacoesComposite(aplicacoesComposite);
+				minhasVacinasComposites.add(minhasVacinasComposite);
 			}
 		}
 		
-		return aplicacoes;
+		return minhasVacinasComposites;
+	}
+
+	@Override
+	public void alteraDadosUsuario(Usuario usuario) throws Exception {
+		usuarioDAO.atualizaUsuario(usuario);
+	}
+
+	@Override
+	public List<Unidade> getUnidades() throws Exception {
+		return localDAO.getUnidades();
+	}
+	
+	@Override
+	public List<RegistroAplicacao> getRegistrosAplicacoesPendentes(Unidade unidade) throws Exception {
+		return registroAplicacoesDAO.getRegistrosAplicacoesPendentes(unidade);
+	}
+
+	@Override
+	public void registraAplicacao(RegistroAplicacao registro) throws Exception {
+		registroAplicacoesDAO.atualizaRegistroAplicacoes(registro);
+	}
+
+	@Override
+	public void deleteRegistroAplicacoes(RegistroAplicacao registro) throws Exception {
+		registroAplicacoesDAO.removeRegistroAplicacoes(registro);
+	}
+
+	@Override
+	public List<Vacina> getVacinas() throws Exception {
+		return vacinaDAO.getVacinas();
+	}
+
+	@Override
+	public void deleteUsuario(Usuario usuario) throws Exception {
+		usuarioDAO.removeUsuario(usuario);
+	}
+
+	@Override
+	public RegistroAplicacao getRegistroByAplicacaoAndUserID(int usuarioID, int aplicacaoID) throws Exception {
+		return registroAplicacoesDAO.getRegistroByAplicacaoAndUserID(usuarioID, aplicacaoID);
 	}
 
 }

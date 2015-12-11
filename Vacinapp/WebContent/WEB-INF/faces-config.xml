@@ -19,7 +19,27 @@
 		</navigation-case>
 		<navigation-case>
 			<from-outcome>minhasVacinas</from-outcome>
-			<to-view-id>/paginas/minhasVacinas.jsf</to-view-id>
+			<to-view-id>/paginas/usuario/minhasVacinas.jsf</to-view-id>
+			<redirect />
+		</navigation-case>
+		<navigation-case>
+			<from-outcome>vacinas</from-outcome>
+			<to-view-id>/paginas/vacinas.jsf</to-view-id>
+			<redirect />
+		</navigation-case>
+		<navigation-case>
+			<from-outcome>locais</from-outcome>
+			<to-view-id>/paginas/locais.jsf</to-view-id>
+			<redirect />
+		</navigation-case>
+		<navigation-case>
+			<from-outcome>configuracao</from-outcome>
+			<to-view-id>/paginas/configuracao.jsf</to-view-id>
+			<redirect />
+		</navigation-case>
+		<navigation-case>
+			<from-outcome>solicitacoes</from-outcome>
+			<to-view-id>/paginas/agente/solicitacoes.jsf</to-view-id>
 			<redirect />
 		</navigation-case>
 	</navigation-rule>

@@ -15,23 +15,23 @@ public class UsuarioDAO extends HibernateDAO implements UsuarioService {
 	
 	@Override
 	public void removeUsuario(Usuario usuario) throws Exception {
-		//TODO
+		remove(Usuario.class, usuario.getId());
 	}
 	
 	@Override
 	public void atualizaUsuario(Usuario usuario) throws Exception {
-		//TODO
+		merge(usuario);
 	}
 
 	@Override
-	public Usuario getUsuarioByEmail(Usuario usuario) throws Exception {
+	public Usuario getUsuarioByEmail(String email) throws Exception {
 		entityManager = HibernateUtils.getEntityManager();
 		
 		String sql = "  SELECT U FROM Usuario U"
 				+ "		WHERE  U.email = :email ";
 		
 		Query query = entityManager.createQuery(sql);
-		query.setParameter("email", usuario.getEmail());
+		query.setParameter("email", email);
 		
 		try {
 			if (!query.getResultList().isEmpty()) {

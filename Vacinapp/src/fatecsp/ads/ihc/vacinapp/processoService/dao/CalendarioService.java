@@ -13,6 +13,6 @@ public interface CalendarioService {
 
 	public void atualizaCalendario(Calendario calendario) throws Exception;
 
-	public List<Calendario> getCalendarioBetweenMonthAndSexo(int month, Sexo sexo) throws Exception;
+	public List<Calendario> getCalendarioBeforeMonthAndSexo(int month, Sexo sexo) throws Exception;
 
 }

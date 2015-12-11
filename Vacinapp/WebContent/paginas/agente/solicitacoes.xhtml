@@ -1,0 +1,148 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+<!DOCTYPE html>
+<!--[if lt IE 7]>      <html class="no-js lt-ie9 lt-ie8 lt-ie7" lang=""> <![endif]-->
+<!--[if IE 7]>         <html class="no-js lt-ie9 lt-ie8" lang=""> <![endif]-->
+<!--[if IE 8]>         <html class="no-js lt-ie9" lang=""> <![endif]-->
+<!--[if gt IE 8]> <html class="no-js" lang=""> <![endif]-->
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	template="/template/template.xhtml">	
+
+	<ui:define name="container">
+	
+	    <div class="container">
+	
+	        <h:form id="solicitacoes" class="row">
+	            
+	            <h2 class="col-md-12">Solicitações de aprovação de vacina</h2>
+	        
+	            <hr />
+	
+	            <div class="form-group col-xs-8">
+	                <h:inputText type="text" id="txtFiltro" name="txtFiltro" class="form-control" value="#{solicitacoes.filtro}" />
+	            </div>
+	            <div class="col-xs-4">
+	                <h:commandButton class="pull-right btn btn-primary" value="Buscar">
+	                	<f:ajax listener="#{solicitacoes.doFiltro}" execute="txtFiltro" render="solicitacoesTable" />
+	                </h:commandButton>
+	            </div>
+	        
+	            <hr /> 
+	
+	            <h:panelGroup id="solicitacoesTable" layout="block" class="col-md-12">
+	                <table class="table table-striped">
+	                    <thead>
+	                        <tr>
+	                            <th>Usuário</th>
+	                            <th>Vacina</th>
+	                        </tr>
+	                    </thead>
+	                    <tbody>
+	                    	<ui:repeat var="solicitacao" value="#{solicitacoes.registros}" varStatus="status">
+								<tr>
+		                            <td><h:outputText value="#{solicitacao.usuario.nome}" /></td>
+		                            <td><h:outputText value="#{solicitacao.aplicacao.vacina.nome}" /></td>
+		                            <td>
+		                                <a class="btn btn-primary pull-right" onclick="loadModal('#{solicitacao.id}');">Validar</a>
+		                            </td>
+		                        </tr>
+	                    	</ui:repeat> 
+	                    </tbody>
+	                </table>
+	            </h:panelGroup>
+	            <h:inputHidden id="registroID" name="registroID" value="#{solicitacoes.registroID}" />
+                <h:commandLink id="btn-modal" style="display: none;">
+                	<f:ajax listener="#{solicitacoes.showModal}" execute="registroID" render="modal-panel" onevent="showModal" />
+                </h:commandLink>
+                
+			    <!-- Modal -->
+			    <div id="ContentSolicitacao" class="modal fade" role="dialog">
+			        <div class="modal-dialog">
+			            <!-- Modal content-->
+			            <div class="modal-content">
+			                <div class="modal-header">
+			                <button type="button" class="close" data-dismiss="modal">
+								<span class="glyphicon glyphicon-remove" aria-hidden="true" />
+			                </button>
+			                <h4 class="modal-title">Validação de solicitação</h4>
+			                </div>
+			                <h:panelGroup layout="block" id="modal-panel" name="modal-panel">
+			                    <div class="modal-body">
+			                        <ul>
+			                            <li>
+			                                <strong>Nome:</strong>
+			                                <h:outputText value=" #{solicitacoes.registroSelecionado.usuario.nome}" />
+			                            </li>
+			                            <li>
+			                                <strong>Sexo:</strong>
+			                                <h:outputText value=" #{solicitacoes.registroSelecionado.usuario.sexo}" />
+			                            </li>
+			                            <li>
+			                                <strong>Idade:</strong>
+			                                <h:outputText value=" #{solicitacoes.usuarioIdade}" />
+			                            </li>
+			                            <li>
+			                                <strong>Data de requerimento:</strong>
+			                                <h:outputText value=" #{solicitacoes.registroSelecionado.dataAplicacao}" />
+			                            </li>
+			                            <li>
+			                                <strong>Vacina:</strong>
+			                                <h:outputText value=" #{solicitacoes.registroSelecionado.aplicacao.vacina.nome}" />
+			                            </li>
+			                            <li>
+			                                <strong>Lote:</strong>
+			                                <h:inputText id="txtLote" name="txtLote" class="form-control" value="#{solicitacoes.registroSelecionado.vacinaLote}" />
+			                            </li>
+			                        </ul>
+					                <h:panelGroup id="alert-message" layout="block" rendered="#{not empty solicitacoes.message}">
+						                <div class="alert alert-danger" role="alert" style="padding: 5px; text-align: center;">
+						                	<strong><h:outputText value="#{solicitacoes.message}" /></strong>
+						                </div>
+					                </h:panelGroup>
+			                    </div>
+			                    <div class="modal-footer">
+			                        <h:commandButton class="btn btn-danger" value="Rejeitar">
+			                        	<f:ajax listener="#{solicitacoes.refuseAplicacao}" render="modal-panel" onevent="response" />
+			                        </h:commandButton>
+									<h:commandButton class="btn btn-success" value="Aprovar">
+										<f:ajax listener="#{solicitacoes.doAplicacao}" execute="txtLote" render="modal-panel" onevent="response" />
+									</h:commandButton>
+			                    </div>
+			                </h:panelGroup>
+			            </div>
+			        </div>
+			    </div>
+			    
+	        </h:form>
+	    </div>
+	    
+	    <script>
+	    	function response(data) {
+	    		if (data.status == "success") {
+	    			var message = $('[id*=alert-message]');
+		    		if (message.length == 0) {
+		    			$('#ContentSolicitacao').modal('hide');
+		    			location.reload();
+		    		}
+	    		}
+	    	}
+	    
+	    	function loadModal(value) {
+	    		$('[id*=registroID]').val(value);
+	    		$('[id*=btn-modal]').click();
+	    	}
+	    	
+	    	function showModal() {
+	    		$('#ContentSolicitacao').modal('show');
+	    	}
+	    
+		    $(document).ready(function() {
+		    	$('[id*=txtFiltro]').attr('placeholder', 'Buscar por nome do usuário');
+		    });
+	    </script>
+	
+	</ui:define>
+	
+</ui:composition>

@@ -9,6 +9,7 @@ public class Factory {
 	private static RegistroAplicacoesService instanceRegistroAplicacoesDAO;
 	private static VacinaService instanceVacinaDAO;
 	private static UsuarioService instanceUsuarioDAO;
+	private static LocalDAO instanceLocalDAO;
 
 	public synchronized AplicacaoService getInstanceAplicacaoDAO() {
 		return instanceAplicacaoDAO == null ? new AplicacaoDAO() : instanceAplicacaoDAO;
@@ -28,6 +29,10 @@ public class Factory {
 	
 	public synchronized UsuarioService getInstanceUsuarioDAO() {
 		return instanceUsuarioDAO == null ? new UsuarioDAO() : instanceUsuarioDAO;
+	}
+
+	public synchronized LocalService getInstanceLocalDAO() {
+		return instanceLocalDAO == null ? new LocalDAO() : instanceLocalDAO;
 	}
 
 }

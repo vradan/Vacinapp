@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+<!DOCTYPE html>
+<!--[if lt IE 7]>      <html class="no-js lt-ie9 lt-ie8 lt-ie7" lang=""> <![endif]-->
+<!--[if IE 7]>         <html class="no-js lt-ie9 lt-ie8" lang=""> <![endif]-->
+<!--[if IE 8]>         <html class="no-js lt-ie9" lang=""> <![endif]-->
+<!--[if gt IE 8]> <html class="no-js" lang=""> <![endif]-->
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	template="/template/template.xhtml">	
+
+	<ui:define name="container">
+	    <div class="container">
+	        <div class="row">
+	
+	            <h2 class="col-md-12">Vacinas</h2>
+	
+	            <hr />
+	
+				<h:form>
+
+	                <div class="form-group col-xs-8">
+	                    <h:inputText type="text" id="txtFiltro" name="txtFiltro" class="form-control" value="#{vacinas.filtro}" />
+	                </div>
+	                <div class="col-xs-4">
+		                <h:commandButton class="pull-right btn btn-primary" value="Buscar">
+		                	<f:ajax listener="#{vacinas.doFiltro}" execute="txtFiltro" render="@form" />
+		                </h:commandButton>
+	                </div>
+	                
+	                <hr />
+					
+					<div id="VacinneList" class="col-md-12 col-sm-12 col-xs-12">
+		                <ul class="list-group">
+		                	<ui:repeat var="vacina" value="#{vacinas.vacinas}">
+			                    <li class="list-group-item">
+			                        <a data-id="#{vacina.id}"><h:outputText value="#{vacina.nome}" />
+			                            <span class="pull-right glyph-red glyphicon glyphicon-info-sign" 
+			                                    aria-hidden="true"></span>
+			                        </a>
+			                    </li>
+		                	</ui:repeat>
+		                </ul>
+		            </div>
+		            
+		            <h:inputHidden id="vacina-id" name="vacina-id" value="#{vacinas.vacinaID}" />
+       				<h:commandLink id="modal-vacina" name="modal-vacina" style="display: none;">
+                		<f:ajax listener="#{vacinas.showModalVacina}" execute="vacina-id" render="vacina-modal-block" />
+               		</h:commandLink>
+		            
+				    <!-- Modal -->
+				    <div id="ContentSeeVacinne" class="modal fade" role="dialog">
+				        <div class="modal-dialog">
+				            <!-- Modal content-->
+				            <div class="modal-content">
+				            	<h:panelGroup id="vacina-modal-block" layout="block">
+					                <div class="modal-header">
+						                <button type="button" class="close" data-dismiss="modal">
+											<span class="glyphicon glyphicon-remove" aria-hidden="true" />
+						                </button>
+						                <h4 class="modal-title">
+						                	<h:outputText value="#{vacinas.vacinaSelecionada.nome}" />
+						                </h4>
+					                </div>
+					                <div class="modal-body">
+					                    <h5><strong>Descrição:</strong></h5>
+					                    <h5 style="padding-left: 15px;"><h:outputText value="#{vacinas.vacinaSelecionada.descricao}" /></h5>
+					                </div>
+				                 </h:panelGroup>
+				            </div>
+				        </div>
+				    </div>
+				</h:form>
+	        </div>
+	    </div>
+	    
+	   	<script>
+	    	$(document).ready(function() {
+			    $('[id*=txtFiltro]').attr('placeholder', 'Buscar por nome  da vacina');
+	    	});
+	    </script>
+
+	</ui:define>
+	
+</ui:composition>

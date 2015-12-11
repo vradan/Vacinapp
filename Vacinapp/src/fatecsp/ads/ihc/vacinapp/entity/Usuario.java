@@ -1,12 +1,17 @@
 package fatecsp.ads.ihc.vacinapp.entity;
 
 import java.util.Date;
+import java.util.List;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
@@ -22,8 +27,16 @@ public class Usuario {
 	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "seq_usuario")
 	private int id;
 	
+	@OneToOne
+	@JoinColumn(name = "id_unidade")
+	private Unidade unidade;
+	
 	@Column(name = "str_nome")
 	private String nome;
+	
+	@OneToOne
+	@JoinColumn(name = "chr_perfil")
+	private UsuarioPerfil perfil;
 	
 	@Column(name = "str_email")
 	private String email;
@@ -37,8 +50,19 @@ public class Usuario {
 	@Column(name = "str_password")
 	private String password;
 	
+	@OneToMany(mappedBy = "usuario", cascade = CascadeType.ALL, orphanRemoval =  true)
+	private List<RegistroAplicacao>	registros;
+	
 	public int getId() {
 		return id;
+	}
+
+	public Unidade getUnidade() {
+		return unidade;
+	}
+
+	public void setUnidade(Unidade unidade) {
+		this.unidade = unidade;
 	}
 
 	public String getNome() {
@@ -47,6 +71,14 @@ public class Usuario {
 
 	public void setNome(String nome) {
 		this.nome = nome;
+	}
+
+	public UsuarioPerfil getPerfil() {
+		return perfil;
+	}
+
+	public void setPerfil(UsuarioPerfil perfil) {
+		this.perfil = perfil;
 	}
 
 	public String getEmail() {
@@ -79,6 +111,14 @@ public class Usuario {
 
 	public void setPassword(String password) {
 		this.password = password;
+	}
+
+	public List<RegistroAplicacao> getRegistros() {
+		return registros;
+	}
+
+	public void setRegistros(List<RegistroAplicacao> registros) {
+		this.registros = registros;
 	}
 
 }
